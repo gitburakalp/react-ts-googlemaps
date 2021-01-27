@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import fetch from "isomorphic-fetch";
 
 const API_KEY = "AIzaSyDF98ueUQD0nn_26-_RglOtLdkXjsKaEnA";
@@ -12,13 +12,19 @@ const ADRESLER = [
 ];
 
 const Test: React.FC = () => {
-  interface StateInterfaceItems {
+  interface StateInterfaceItem {
     id: number;
     lat: number;
     lng: number;
   }
 
-  interface StateInterfaceItems extends Array<StateInterfaceItems> {}
+  interface StateInterface {
+    StateInterfaceItems: StateInterfaceItem[];
+  }
+
+  const [id, setID] = useState<StateInterfaceItem>({
+    id: 0
+  });
 
   useEffect(() => {
     ADRESLER.map(adres => {
@@ -29,14 +35,19 @@ const Test: React.FC = () => {
         if (response.status !== 400) {
           const content = await response.json();
 
-          content.results.map(res => {
+          content.results.map((res, idx) => {
             var loc = res.geometry.location;
-            console.log(loc.lat);
+
+            result.push({
+              id: idx,
+              lat: loc.lat,
+              lng: loc.lng
+            });
+
+            console.log(result);
           });
         }
       };
-
-      getMarkers();
     });
   });
 
