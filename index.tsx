@@ -3,7 +3,8 @@ import { render } from "react-dom";
 import Hello from "./Hello";
 import "./style.css";
 
-import Test from "./Test/";
+import GoogleMaps from "./GoogleMaps/";
+import Contact from "./Contact";
 
 interface AppProps {}
 interface AppState {
@@ -21,9 +22,10 @@ class App extends Component<AppProps, AppState> {
   render() {
     return (
       <div>
+        <Contact />
         <Hello name={this.state.name} />
         <p>Start editing to see some magic happen :)</p>
-        <Test />
+        <GoogleMaps />
       </div>
     );
   }
