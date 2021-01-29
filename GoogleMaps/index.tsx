@@ -43,52 +43,85 @@ const MapWithAMarkerClusterer = compose(
       enableRetinaIcons
       gridSize={60}
     >
-      {props.markers.map(marker => (
-        <Marker
-          key={marker.photo_id}
-          position={{ lat: marker.latitude, lng: marker.longitude }}
-        />
-      ))}
+      {props.markers.map((marker, idx) =>
+        marker.map((el, idx) => {
+          <Marker
+            key={idx}
+            position={{ lat: el.latitude, lng: el.longitude }}
+          />;
+        })
+      )}
     </MarkerClusterer>
   </GoogleMap>
 ));
 
-interface StateInterface {
-  markers: Array<string>;
-}
-
-class Test extends React.Component<StateInterface> {
+class Test extends React.Component {
   componentWillMount() {
-    this.setState({ markers: [] });
-  }
-
-  componentDidMount() {
-    var arr = [];
-
-    ADRESLER.map(adres => {
-      var url = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+${adres}&key=${API_KEY}`;
-
-      const getMarkers = async () => {
-        const response = await fetch(url);
-        if (response.status !== 400) {
-          const content = await response.json();
-
-          content.results.map(res => {
-            var loc = res.geometry.location;
-
-            arr.push(loc);
-          });
-
-          this.setState({ markers: arr });
-        }
-      };
-
-      getMarkers();
+    this.setState({
+      contactData: []
     });
   }
 
+  componentDidMount() {
+    this.setState({
+      contactData: [
+        {
+          name: "Test",
+          surname: "TestSurname",
+          phones: [
+            {
+              phone1: "phone",
+              phone2: "phone"
+            }
+          ],
+          addresses: [
+            {
+              address1: [
+                {
+                  lat: 13,
+                  long: 22
+                }
+              ],
+              address2: [
+                {
+                  lat: 44,
+                  long: -8
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    });
+
+    // var arr = [];
+    // ADRESLER.map(adres => {
+    //   var url = `https://maps.googleapis.com/maps/api/geocode/json?address=1600+${adres}&key=${API_KEY}`;
+    //   const getMarkers = async () => {
+    //     const response = await fetch(url);
+    //     if (response.status !== 400) {
+    //       const content = await response.json();
+    //       content.results.map(res => {
+    //         var loc = res.geometry.location;
+    //         arr.push(loc);
+    //       });
+    //       this.setState({ markers: arr });
+    //     }
+    //   };
+    //   getMarkers();
+    // });
+  }
+
   render() {
-    console.log(this.state.markers);
+    const { contactData } = this.state;
+
+    contactData.map(el => {
+      el.addresses.map((address, idx) => {
+        address.map(el => {
+          console.log(el);
+        });
+      });
+    });
 
     return <div />;
   }
